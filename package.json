@@ -1,0 +1,17 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "flow-js-testing": "^0.2.3-alpha.6"
+  },
+  "devDependencies": {
+    "jest": "^28.1.3"
+  }
+}
