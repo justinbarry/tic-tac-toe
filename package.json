@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "flow-js-testing": "^0.2.3-alpha.6"
+    "@onflow/flow-js-testing": "^0.3.0-alpha.11"
   },
   "devDependencies": {
     "jest": "^28.1.3"
