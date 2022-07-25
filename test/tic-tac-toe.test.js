@@ -2,18 +2,23 @@ import path from "path";
 import {
   init,
   emulator,
-  shallPass,
   sendTransaction,
+  shallPass,
   getAccountAddress,
+  deployContractByName,
+  getTemplate,
+  executeScript
 } from "@onflow/flow-js-testing";
 
 // We need to set timeout for a higher number, because some transactions might take up some time
 jest.setTimeout(10000);
 
 describe("TicTacToe Contract", () => {
+  let basePath;
+
   // Instantiate emulator and path to Cadence files
   beforeEach(async () => {
-    const basePath = path.resolve(__dirname, "./cadence");
+    basePath = path.resolve(__dirname, "../cadence");
     await init(basePath);
     return emulator.start();
   });
@@ -24,26 +29,15 @@ describe("TicTacToe Contract", () => {
   });
 
   test("basic transaction", async () => {
-    const code = `
-      transaction(message: String){
-        prepare(singer: AuthAccount){
-          log(message)
-        }
-      }
-    `;
     const Alice = await getAccountAddress("Alice");
-    const signers = [Alice];
-    const args = ["Hello, Cadence"];
+    const Bernard = await getAccountAddress("Bernard");
+    
+    await shallPass(deployContractByName({
+      name: "TicTacToe",
+      to: Alice,
+    }));
 
-    const [txResult, error] = await shallPass(
-      sendTransaction({
-        code,
-        signers,
-        args,
-      })
-    );
-
-    // Transaction result will hold status, events and error message
-    console.log(txResult, error);
+    await shallPass(sendTransaction({name: 'CreateGameCollection', signer: [Alice]}));
+    await shallPass(sendTransaction({name: 'CreateGame', signer: [Bernard], args: [Alice] }));
   });
 });
